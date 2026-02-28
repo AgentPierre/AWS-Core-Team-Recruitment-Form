@@ -1,6 +1,84 @@
 const totalPages = 4;
 let currentPage = 1;
 
+function getSelectedTrack() {
+  const track = document.querySelector('input[name="track"]:checked');
+  return track ? track.value : "";
+}
+
+function toggleOtherMajorField() {
+  const major = document.getElementById("major");
+  const otherMajor = document.getElementById("otherMajor");
+  const otherMajorField = otherMajor.closest(".field");
+  if (major.value === "Other") {
+    otherMajorField.classList.remove("hidden");
+  } else {
+    otherMajorField.classList.add("hidden");
+    otherMajor.value = "";
+    otherMajor.classList.remove("error");
+  }
+}
+
+function toggleOfficerFields() {
+  const officerFields = document.getElementById("officerFields");
+  const isOfficer = getSelectedTrack() === "Officer";
+  if (isOfficer) {
+    officerFields.classList.remove("hidden");
+  } else {
+    officerFields.classList.add("hidden");
+    [
+      "rolePreference",
+      "leadershipExperience",
+      "technicalExperience",
+      "initiativeLead",
+      "weeklyCommitment",
+      "conductAgreement",
+    ].forEach((id) => {
+      const element = document.getElementById(id);
+      if (!element) return;
+      if (element.type === "checkbox") {
+        element.checked = false;
+      } else {
+        element.value = "";
+      }
+      element.classList.remove("error");
+    });
+  }
+}
+
+function handleTrackChange() {
+  toggleOfficerFields();
+  if (currentPage !== 1) return;
+  const pageOne = document.getElementById("page1");
+  if (!pageOne) return;
+  pageOne.querySelectorAll(".error-msg").forEach((errorNode) => {
+    if (errorNode.textContent === "Please select a track") {
+      errorNode.remove();
+    }
+  });
+}
+
+function setTrack(track) {
+  const trackInput = document.querySelector(
+    `input[name="track"][value="${track}"]`,
+  );
+  if (!trackInput) return;
+  trackInput.checked = true;
+  toggleOfficerFields();
+}
+
+function goToForm(track) {
+  if (track) {
+    setTrack(track);
+  }
+  currentPage = 1;
+  showPage(1);
+  const formStart = document.getElementById("applicationForm");
+  if (formStart) {
+    formStart.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 function updateSteps(page) {
   const fill = document.getElementById("stepFill");
   const percent = ((page - 1) / (totalPages - 1)) * 75 + 8;
@@ -52,24 +130,43 @@ function validatePage(page) {
 
   if (page === 1) {
     [
+      { id: "trackGroup", msg: "Please select a track", type: "group" },
       { id: "firstName", msg: "First name is required" },
       { id: "lastName", msg: "Last name is required" },
-      { id: "gmail", msg: "Gmail is required" },
+      { id: "email", msg: "UH Email is required" },
       { id: "phone", msg: "Phone number is required" },
-      { id: "branch", msg: "Please select a branch" },
-      { id: "section", msg: "Section is required" },
+      { id: "major", msg: "Please select a major" },
+      { id: "campus", msg: "Please select a campus" },
       { id: "year", msg: "Please select a year" },
     ].forEach((f) => {
+      if (f.type === "group") {
+        if (!document.querySelector('input[name="track"]:checked')) {
+          const group = document.getElementById(f.id);
+          const message = document.createElement("div");
+          message.className = "error-msg";
+          message.textContent = f.msg;
+          group.parentNode.insertBefore(message, group.nextSibling);
+          valid = false;
+        }
+        return;
+      }
       const el = document.getElementById(f.id);
       if (!el.value.trim()) {
         showError(el, f.msg);
         valid = false;
       }
     });
-    const gmail = document.getElementById("gmail");
-    if (gmail.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmail.value)) {
-      if (!gmail.classList.contains("error")) {
-        showError(gmail, "Please enter a valid email");
+    const email = document.getElementById("email");
+    const emailValue = email.value.trim().toLowerCase();
+    email.value = emailValue;
+    const isUhEmail =
+      emailValue.endsWith("@uh.edu") || emailValue.endsWith("@cougarnet.uh.edu");
+    if (emailValue && !isUhEmail) {
+      if (!email.classList.contains("error")) {
+        showError(
+          email,
+          "Please use your official UH email address (@uh.edu or @cougarnet.uh.edu).",
+        );
         valid = false;
       }
     }
@@ -79,6 +176,13 @@ function validatePage(page) {
         showError(phone, "Please enter a valid phone number");
         valid = false;
       }
+    }
+
+    const major = document.getElementById("major");
+    const otherMajor = document.getElementById("otherMajor");
+    if (major.value === "Other" && !otherMajor.value.trim()) {
+      showError(otherMajor, "Other major is required");
+      valid = false;
     }
   }
 
@@ -102,6 +206,45 @@ function validatePage(page) {
       m.textContent = "Please select at least one skill";
       g.parentNode.insertBefore(m, g.nextSibling);
       valid = false;
+    }
+
+    if (getSelectedTrack() === "Officer") {
+      [
+        { id: "rolePreference", msg: "Role preference is required" },
+        {
+          id: "leadershipExperience",
+          msg: "Leadership/organization experience is required",
+        },
+        { id: "technicalExperience", msg: "Technical experience is required" },
+        {
+          id: "initiativeLead",
+          msg: "Initiative plan is required",
+        },
+      ].forEach((f) => {
+        const el = document.getElementById(f.id);
+        if (!el.value.trim()) {
+          showError(el, f.msg);
+          valid = false;
+        }
+      });
+
+      const weeklyCommitment = document.getElementById("weeklyCommitment");
+      if (!weeklyCommitment.checked) {
+        const m = document.createElement("div");
+        m.className = "error-msg";
+        m.textContent = "Please confirm weekly time commitment";
+        weeklyCommitment.closest(".ack-field").appendChild(m);
+        valid = false;
+      }
+
+      const conductAgreement = document.getElementById("conductAgreement");
+      if (!conductAgreement.checked) {
+        const m = document.createElement("div");
+        m.className = "error-msg";
+        m.textContent = "You must agree to follow the Code of Conduct";
+        conductAgreement.closest(".ack-field").appendChild(m);
+        valid = false;
+      }
     }
   }
 
@@ -227,19 +370,47 @@ function launchConfetti() {
 
 /* ===== SUBMIT ===== */
 // Replace this URL with your Google Apps Script Web App URL
-const GOOGLE_SHEET_URL = "YOUR_GOOGLE_SHEET_URL";
+const GOOGLE_SHEET_URL =
+  "https://script.google.com/macros/s/AKfycbzBPbcQ6sIbuJV_MIvzBn8GVSDZS96dqASsB8dKPmaqPffEyvh4B4GnsOB50aVQMw-btw/exec";
+const DISCORD_INVITE_URL = "#";
+
+function isDevSubmissionMode() {
+  const url = (GOOGLE_SHEET_URL || "").trim();
+  if (!url) return true;
+  const normalized = url.toUpperCase();
+  return normalized.includes("YOUR_") || normalized.includes("PLACEHOLDER");
+}
 
 function submitForm() {
   if (!validatePage(4)) return;
 
+  const emailInput = document.getElementById("email");
+  const normalizedEmail = emailInput.value.trim().toLowerCase();
+  emailInput.value = normalizedEmail;
+  const uhEmailRegex = /@(uh\.edu|cougarnet\.uh\.edu)$/i;
+  if (!uhEmailRegex.test(normalizedEmail)) {
+    alert(
+      "Please use your official UH email address (@uh.edu or @cougarnet.uh.edu).",
+    );
+    return;
+  }
+
+  const track = getSelectedTrack();
+  const majorValue = document.getElementById("major").value;
+  const otherMajorValue =
+    majorValue === "Other" ? document.getElementById("otherMajor").value : "";
+  const isOfficer = track === "Officer";
+
   const data = {
+    track,
     firstName: document.getElementById("firstName").value,
     lastName: document.getElementById("lastName").value,
-    gmail: document.getElementById("gmail").value,
+    email: document.getElementById("email").value.trim().toLowerCase(),
     phone: document.getElementById("phone").value,
-    branch: document.getElementById("branch").value,
-    section: document.getElementById("section").value,
-    year: document.getElementById("year").value,
+    major: majorValue,
+    otherMajor: otherMajorValue,
+    campus: document.getElementById("campus").value,
+    classification: document.getElementById("year").value,
     whyJoin: document.getElementById("whyJoin").value,
     improvements: document.getElementById("improvements").value,
     expectations: document.getElementById("expectations").value,
@@ -249,6 +420,24 @@ function submitForm() {
     otherSkill: document.getElementById("otherSkill").value,
     proofLink: document.getElementById("proofLink").value,
     workshop: document.querySelector('input[name="workshop"]:checked').value,
+    rolePreference: isOfficer
+      ? document.getElementById("rolePreference").value
+      : "",
+    leadershipExperience: isOfficer
+      ? document.getElementById("leadershipExperience").value
+      : "",
+    technicalExperience: isOfficer
+      ? document.getElementById("technicalExperience").value
+      : "",
+    initiativeThisSemester: isOfficer
+      ? document.getElementById("initiativeLead").value
+      : "",
+    weeklyCommitment: isOfficer
+      ? document.getElementById("weeklyCommitment").checked
+      : false,
+    conductAgreement: isOfficer
+      ? document.getElementById("conductAgreement").checked
+      : false,
   };
 
   // Disable submit button while sending
@@ -256,21 +445,47 @@ function submitForm() {
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
+  const resetSubmitButton = () => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Application";
+  };
+
+  if (isDevSubmissionMode()) {
+    console.log("[DEV MODE] Form payload:", data);
+    console.log("[DEV MODE] Payload keys:", Object.keys(data));
+    showSuccessPage();
+    return;
+  }
+
+  console.log("[SUBMIT] Payload keys:", Object.keys(data));
+
   // Send to Google Sheets
   fetch(GOOGLE_SHEET_URL, {
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(data),
   })
-    .then(() => {
-      showSuccessPage();
+    .then(async (res) => {
+      const text = await res.text();
+
+      let payload = null;
+      try {
+        payload = JSON.parse(text);
+      } catch (_) { }
+
+      if (payload && payload.ok === true) {
+        showSuccessPage();
+        return;
+      }
+      throw new Error(
+        (payload && payload.error) ||
+        `Submission failed. Expected { ok: true }. HTTP ${res.status}. Response: ${text}`,
+      );
     })
     .catch((err) => {
       console.error("Submission error:", err);
-      // Still show success — no-cors mode won't return a readable response,
-      // but the data is sent. If you need error handling, use a proxy.
-      showSuccessPage();
+      resetSubmitButton();
+      alert(err.message || "Submission failed. Please try again.");
     });
 }
 
@@ -290,3 +505,17 @@ function showSuccessPage() {
 
 // Init
 showPage(1);
+
+const successDiscordLink = document.getElementById("successDiscordLink");
+if (successDiscordLink) {
+  successDiscordLink.href = DISCORD_INVITE_URL;
+}
+
+document
+  .querySelectorAll('input[name="track"]')
+  .forEach((radio) => radio.addEventListener("change", handleTrackChange));
+document
+  .getElementById("major")
+  .addEventListener("change", toggleOtherMajorField);
+handleTrackChange();
+toggleOtherMajorField();

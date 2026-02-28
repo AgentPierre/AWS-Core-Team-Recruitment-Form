@@ -1,515 +1,161 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AWS Cloud Clubs - Registration Closed</title>
+    <title>AWS Cloud Club - University of Houston</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
     <style>
-      *,
-      *::before,
-      *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      :root {
-        --purple-900: #1a0a3e;
-        --purple-800: #2d1b69;
-        --purple-700: #3d2a6e;
-        --purple-600: #5b3ea5;
-        --purple-500: #7c5cbf;
-        --purple-400: #9b7dd4;
-        --purple-300: #b8a0e3;
-        --purple-200: #d6cce8;
-        --purple-100: #ede7f6;
-        --purple-50: #f5f2fa;
-        --white: #ffffff;
-        --gray-600: #4b5563;
-        --radius: 18px;
-        --shadow-xl: 0 20px 60px rgba(91, 62, 165, 0.2);
-        --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family:
-          "Inter",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
-        background: linear-gradient(
-          170deg,
-          #c9b8e8 0%,
-          #b5a0d8 15%,
-          #d4c6ed 30%,
-          #bfaade 50%,
-          #c8b5e5 70%,
-          #b3a0d5 85%,
-          #d0c0ea 100%
-        );
-        background-attachment: fixed;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 40px 16px;
-        position: relative;
-        overflow-x: hidden;
-      }
-
-      /* ===== BACKGROUND CLOUDS ===== */
-      .bg-layer {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-        z-index: 0;
-      }
-      .cloud-realistic svg {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-      .cloud-realistic {
-        position: absolute;
-        animation: driftCloud linear infinite;
-      }
-      .cr-1 {
-        width: 320px;
-        top: 4%;
-        left: -320px;
-        animation-duration: 80s;
-        opacity: 0.35;
-        filter: blur(3px);
-      }
-      .cr-2 {
-        width: 400px;
-        top: 30%;
-        left: -400px;
-        animation-duration: 100s;
-        animation-delay: 20s;
-        opacity: 0.25;
-        filter: blur(4px);
-      }
-      .cr-3 {
-        width: 350px;
-        top: 65%;
-        left: -350px;
-        animation-duration: 90s;
-        animation-delay: 40s;
-        opacity: 0.3;
-        filter: blur(3.5px);
-      }
-      .cr-4 {
-        width: 220px;
-        top: 10%;
-        left: -220px;
-        animation-duration: 55s;
-        animation-delay: 5s;
-        opacity: 0.45;
-        filter: blur(2px);
-      }
-      .cr-5 {
-        width: 260px;
-        top: 45%;
-        left: -260px;
-        animation-duration: 65s;
-        animation-delay: 15s;
-        opacity: 0.4;
-        filter: blur(2.5px);
-      }
-      .cr-6 {
-        width: 160px;
-        top: 78%;
-        left: -160px;
-        animation-duration: 35s;
-        animation-delay: 2s;
-        opacity: 0.55;
-        filter: blur(1px);
-      }
-
-      @keyframes driftCloud {
-        0% {
-          transform: translateX(0) translateY(0);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        25% {
-          transform: translateX(calc(25vw + 50px)) translateY(-10px);
-        }
-        50% {
-          transform: translateX(calc(50vw + 100px)) translateY(5px);
-        }
-        75% {
-          transform: translateX(calc(75vw + 150px)) translateY(-7px);
-        }
-        100% {
-          transform: translateX(calc(100vw + 400px)) translateY(0);
-        }
-      }
 
-      /* ===== SPARKLES ===== */
-      .sparkles {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-      }
-      .sparkle {
-        position: absolute;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 14px;
-        animation: twinkle ease-in-out infinite;
-      }
-      .s1 {
-        top: 6%;
-        left: 8%;
-        animation-duration: 4s;
-      }
-      .s2 {
-        top: 12%;
-        right: 12%;
-        animation-duration: 3.5s;
-        animation-delay: 0.5s;
-        font-size: 10px;
-      }
-      .s3 {
-        top: 25%;
-        left: 4%;
-        animation-duration: 4.5s;
-        animation-delay: 1s;
-      }
-      .s4 {
-        top: 38%;
-        right: 6%;
-        animation-duration: 3s;
-        animation-delay: 1.5s;
-        font-size: 12px;
-      }
-      .s5 {
-        top: 52%;
-        left: 12%;
-        animation-duration: 5s;
-        animation-delay: 2s;
-      }
-      .s6 {
-        top: 65%;
-        right: 18%;
-        animation-duration: 3.8s;
-        animation-delay: 0.3s;
-        font-size: 10px;
-      }
-      .s7 {
-        top: 78%;
-        left: 6%;
-        animation-duration: 4.2s;
-        animation-delay: 1.8s;
-      }
-      .s8 {
-        top: 88%;
-        right: 10%;
-        animation-duration: 3.2s;
-        animation-delay: 0.8s;
-      }
+        :root {
+            --purple-900: #1a0a3e;
+            --purple-700: #3d2a6e;
+            --purple-600: #5b3ea5;
+            --purple-200: #d6cce8;
+            --white: #ffffff;
+            --gray-600: #4b5563;
+            --radius: 18px;
+        }
 
-      @keyframes twinkle {
-        0%,
-        100% {
-          opacity: 0.15;
-          transform: scale(0.7) rotate(0deg);
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: linear-gradient(170deg, #c9b8e8 0%, #d4c6ed 40%, #d0c0ea 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
         }
-        50% {
-          opacity: 0.9;
-          transform: scale(1.2) rotate(180deg);
+
+        .container {
+            width: 100%;
+            max-width: 680px;
         }
-      }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            box-shadow: 0 20px 60px rgba(91, 62, 165, 0.2);
+            text-align: center;
+        }
+
+        .logo {
+            width: 320px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .university-text {
+            margin-top: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--purple-700);
+        }
+
+        h1 {
+            color: var(--purple-900);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+
+        .action {
+            margin-top: 20px;
+        }
+
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 12px 18px;
+            box-shadow: 0 4px 16px rgba(91, 62, 165, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .discord-btn:hover,
+        .discord-btn:focus-visible {
+            background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(91, 62, 165, 0.5);
+        }
+
+        .discord-btn svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+        }
+
+        .footer {
+            margin-top: 22px;
+            border-top: 1px solid var(--purple-200);
+            padding-top: 14px;
+        }
+
+        .footer p {
+            font-size: 12px;
+        }
     </style>
-  </head>
-</html>
-    <style>
-      /* ===== CARD ===== */
-      .container {
-        width: 100%;
-        max-width: 640px;
-        position: relative;
-        z-index: 1;
-      }
+</head>
 
-      .card {
-        background: var(--white);
-        border-radius: var(--radius);
-        padding: 50px 36px 44px;
-        box-shadow: var(--shadow-xl);
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
-      }
-
-      .card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 50% 20%, rgba(91,62,165,0.06) 0%, transparent 70%);
-        pointer-events: none;
-      }
-
-      @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(24px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* ===== CLOSED BADGE ===== */
-      .closed-badge {
-        display: inline-block;
-        background: linear-gradient(135deg, #fef3c7, #fde68a);
-        color: #92400e;
-        font-size: 12px;
-        font-weight: 700;
-        padding: 6px 20px;
-        border-radius: 20px;
-        margin-bottom: 24px;
-        letter-spacing: 0.5px;
-        animation: fadeUp 0.6s ease-out 0.2s both;
-      }
-
-      /* ===== LOCK ICON ===== */
-      .lock-icon {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 24px;
-        position: relative;
-        animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
-      }
-
-      .lock-icon::before {
-        content: "";
-        position: absolute;
-        inset: -15px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(91,62,165,0.12) 0%, transparent 70%);
-        animation: pulseRing 2.5s ease-out infinite;
-      }
-
-      .lock-icon svg {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        z-index: 1;
-      }
-
-      @keyframes popIn {
-        from { transform: scale(0); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-      }
-
-      @keyframes pulseRing {
-        0% { transform: scale(0.8); opacity: 1; }
-        100% { transform: scale(2); opacity: 0; }
-      }
-
-      /* ===== TEXT ===== */
-      .card h1 {
-        font-size: 28px;
-        font-weight: 800;
-        color: var(--purple-900);
-        margin-bottom: 8px;
-        line-height: 1.3;
-        animation: slideUp 0.6s ease-out 0.5s both;
-      }
-
-      .card h2 {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--purple-600);
-        margin-bottom: 16px;
-        animation: slideUp 0.6s ease-out 0.6s both;
-      }
-
-      .card p {
-        font-size: 14px;
-        color: var(--gray-600);
-        line-height: 1.7;
-        max-width: 460px;
-        margin: 0 auto;
-        animation: slideUp 0.6s ease-out 0.7s both;
-      }
-
-      .card p + p {
-        margin-top: 12px;
-      }
-
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* ===== DIVIDER ===== */
-      .divider {
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--purple-300), transparent);
-        margin: 28px 0;
-        border-radius: 2px;
-        animation: slideUp 0.6s ease-out 0.8s both;
-      }
-
-      /* ===== EVENTS SECTION ===== */
-      .events-text {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--purple-800);
-        margin-bottom: 6px;
-        animation: slideUp 0.6s ease-out 0.9s both;
-      }
-
-      .events-sub {
-        font-size: 13px;
-        color: var(--gray-600);
-        margin-bottom: 24px;
-        animation: slideUp 0.6s ease-out 1s both;
-      }
-
-      /* ===== WHATSAPP BUTTON ===== */
-      .whatsapp-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 14px 32px;
-        background: #25d366;
-        color: #fff;
-        font-size: 15px;
-        font-weight: 700;
-        font-family: inherit;
-        border: none;
-        border-radius: 12px;
-        text-decoration: none;
-        cursor: pointer;
-        transition: all var(--transition);
-        box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
-        animation: slideUp 0.6s ease-out 1.1s both;
-      }
-
-      .whatsapp-btn:hover {
-        background: #1ebe57;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(37, 211, 102, 0.45);
-      }
-
-      .whatsapp-btn svg {
-        width: 22px;
-        height: 22px;
-        fill: #fff;
-      }
-
-      .whatsapp-hint {
-        font-size: 12px;
-        color: var(--purple-400);
-        margin-top: 12px;
-        animation: slideUp 0.6s ease-out 1.2s both;
-      }
-
-      /* ===== FOOTER ===== */
-      .footer {
-        margin-top: 28px;
-        padding-top: 20px;
-        border-top: 1px solid var(--purple-100);
-        animation: slideUp 0.6s ease-out 1.3s both;
-      }
-
-      .footer p {
-        font-size: 12px;
-        color: var(--purple-300);
-      }
-
-      /* ===== RESPONSIVE ===== */
-      @media (max-width: 480px) {
-        body { padding: 20px 12px; }
-        .card { padding: 40px 20px 36px; }
-        .card h1 { font-size: 22px; }
-        .card h2 { font-size: 16px; }
-        .whatsapp-btn { padding: 12px 24px; font-size: 14px; }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Background clouds -->
-    <div class="bg-layer">
-      <div class="cloud-realistic cr-1"><svg viewBox="0 0 480 150"><path d="M60 130c-22 0-40-12-44-28-18-4-30-18-26-36 2-14 14-25 28-27 8-22 30-38 55-38 18 0 34 9 44 22 10-7 24-11 38-9 22 4 38 22 40 44 14 4 24 16 24 30 0 18-14 33-32 35h-1c-4 6-11 9-18 9H60z" fill="white"/></svg></div>
-      <div class="cloud-realistic cr-2"><svg viewBox="0 0 480 150"><path d="M60 130c-22 0-40-12-44-28-18-4-30-18-26-36 2-14 14-25 28-27 8-22 30-38 55-38 18 0 34 9 44 22 10-7 24-11 38-9 22 4 38 22 40 44 14 4 24 16 24 30 0 18-14 33-32 35h-1c-4 6-11 9-18 9H60z" fill="white"/></svg></div>
-      <div class="cloud-realistic cr-3"><svg viewBox="0 0 480 150"><path d="M60 130c-22 0-40-12-44-28-18-4-30-18-26-36 2-14 14-25 28-27 8-22 30-38 55-38 18 0 34 9 44 22 10-7 24-11 38-9 22 4 38 22 40 44 14 4 24 16 24 30 0 18-14 33-32 35h-1c-4 6-11 9-18 9H60z" fill="white"/></svg></div>
-      <div class="cloud-realistic cr-4"><svg viewBox="0 0 480 150"><path d="M60 130c-22 0-40-12-44-28-18-4-30-18-26-36 2-14 14-25 28-27 8-22 30-38 55-38 18 0 34 9 44 22 10-7 24-11 38-9 22 4 38 22 40 44 14 4 24 16 24 30 0 18-14 33-32 35h-1c-4 6-11 9-18 9H60z" fill="white"/></svg></div>
-      <div class="cloud-realistic cr-5"><svg viewBox="0 0 480 150"><path d="M60 130c-22 0-40-12-44-28-18-4-30-18-26-36 2-14 14-25 28-27 8-22 30-38 55-38 18 0 34 9 44 22 10-7 24-11 38-9 22 4 38 22 40 44 14 4 24 16 24 30 0 18-14 33-32 35h-1c-4 6-11 9-18 9H60z" fill="white"/></svg></div>
-      <div class="cloud-realistic cr-6"><svg viewBox="0 0 480 150"><path d="M60 130c-22 0-40-12-44-28-18-4-30-18-26-36 2-14 14-25 28-27 8-22 30-38 55-38 18 0 34 9 44 22 10-7 24-11 38-9 22 4 38 22 40 44 14 4 24 16 24 30 0 18-14 33-32 35h-1c-4 6-11 9-18 9H60z" fill="white"/></svg></div>
-    </div>
-
-    <!-- Sparkles -->
-    <div class="sparkles">
-      <div class="sparkle s1">✦</div>
-      <div class="sparkle s2">+</div>
-      <div class="sparkle s3">✦</div>
-      <div class="sparkle s4">+</div>
-      <div class="sparkle s5">✦</div>
-      <div class="sparkle s6">+</div>
-      <div class="sparkle s7">✦</div>
-      <div class="sparkle s8">+</div>
-    </div>
-
-    <!-- Main Card -->
+<body>
     <div class="container">
-      <div class="card">
-        <div class="closed-badge">🔒 Registration Closed</div>
+        <div class="card">
+            <img src="banner.png" alt="AWS Cloud Club" class="logo" />
+            <p class="university-text">University of Houston</p>
+            <h1>Thank You for Applying</h1>
+            <p>
+                Your submission to AWS Cloud Club – University of Houston has been received.
+                We review both Member and Core Team Officer applications and will share updates soon.
+            </p>
 
-        <div class="lock-icon">
-          <svg viewBox="0 0 80 80">
-            <circle cx="40" cy="40" r="38" fill="none" stroke="#5b3ea5" stroke-width="2.5" opacity="0.3"/>
-            <circle cx="40" cy="40" r="38" fill="none" stroke="#5b3ea5" stroke-width="2.5"
-              stroke-dasharray="240" stroke-dashoffset="240"
-              style="animation: drawCircle 1s ease-out 0.5s forwards"/>
-            <text x="40" y="48" text-anchor="middle" font-size="32" fill="#5b3ea5">🙏</text>
-          </svg>
+            <div class="action">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="discord-btn" id="thankyouDiscordLink">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path fill="currentColor"
+                            d="M20.32 4.37A19.8 19.8 0 0 0 16.2 3c-.18.33-.39.77-.53 1.12a18.1 18.1 0 0 0-5.34 0A12.3 12.3 0 0 0 9.8 3a19.7 19.7 0 0 0-4.13 1.37C3.06 8.29 2.35 12.1 2.7 15.86A19.9 19.9 0 0 0 8 18.52c.43-.6.82-1.25 1.15-1.94-.63-.24-1.23-.54-1.79-.9.15-.11.3-.23.44-.35 3.45 1.62 7.2 1.62 10.6 0 .15.12.29.24.44.35-.56.36-1.16.66-1.8.9.34.69.72 1.34 1.16 1.94a19.8 19.8 0 0 0 5.3-2.66c.4-4.37-.69-8.15-2.88-11.49ZM9.62 13.57c-1.03 0-1.87-.95-1.87-2.12 0-1.16.82-2.11 1.87-2.11 1.04 0 1.88.95 1.87 2.11 0 1.17-.83 2.12-1.87 2.12Zm4.76 0c-1.04 0-1.87-.95-1.87-2.12 0-1.16.82-2.11 1.87-2.11s1.88.95 1.87 2.11c0 1.17-.83 2.12-1.87 2.12Z" />
+                    </svg>
+                    Join our Official Discord
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>
+                    AWS Cloud Club at the University of Houston is a student-led organization and is not affiliated
+                    with or endorsed by Amazon Web Services.
+                </p>
+            </div>
         </div>
-
-        <h1>Thank You for Your Interest!</h1>
-        <h2>AWS Cloud Clubs Core Team Recruitment</h2>
-
-        <p>
-          The registration form for the AWS Cloud Clubs Core Team is now officially closed.
-          We truly appreciate every single application we received — your enthusiasm for cloud
-          and community means the world to us.
-        </p>
-        <p>
-          We're reviewing all applications carefully and will reach out to you soon.
-          Stay tuned for updates!
-        </p>
-
-        <div class="divider"></div>
-
-        <p class="events-text">🚀 Looking forward to meeting you all at our upcoming events!</p>
-        <p class="events-sub">Stay connected so you never miss an announcement.</p>
-
-        <a href="YOUR_WHATSAPP_GROUP_URL" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Join Our WhatsApp Group
-        </a>
-        <p class="whatsapp-hint">Get instant updates on results, events, and announcements</p>
-
-        <div class="footer">
-          <p>AWS Cloud Clubs — Building the future, together ☁️</p>
-        </div>
-      </div>
     </div>
+    <script>
+        const DISCORD_INVITE_URL = "#";
+        const thankyouDiscordLink = document.getElementById("thankyouDiscordLink");
+        if (thankyouDiscordLink) {
+            thankyouDiscordLink.href = DISCORD_INVITE_URL;
+        }
+    </script>
+</body>
 
-    <style>
-      @keyframes drawCircle { to { stroke-dashoffset: 0; } }
-    </style>
-  </body>
 </html>
