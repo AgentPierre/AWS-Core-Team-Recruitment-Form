@@ -29,7 +29,7 @@
 </p>
 <p align="center"><em>Full page overview of the recruitment form</em></p>
 
-**Step 1** — Personal details (name, email, phone, branch, section, year)
+**Step 1** — Track + personal details (member/officer, name, email, phone, major, campus, year)
 
 <p align="center"><img src="1.png" alt="Step 1" width="600" /></p>
 
@@ -45,7 +45,7 @@
 
 <p align="center"><img src="4.png" alt="Step 4" width="600" /></p>
 
-**Step 5** — Success page with confetti & WhatsApp group link
+**Step 5** — Success page with confetti & Discord server link
 
 <p align="center"><img src="5.png" alt="Step 5" width="600" /></p>
 
@@ -60,7 +60,7 @@
 - 📱 **Fully Responsive** — Works on desktop, tablet, and mobile
 - ✅ **Client-Side Validation** — Required fields, email & phone format checks
 - 📊 **Google Sheets Integration** — Zero-cost, serverless data collection
-- 💬 **WhatsApp Group Link** — Post-submission CTA to keep applicants in the loop
+- 💬 **Discord Server Link** — Post-submission CTA to keep applicants in the loop
 - 🆓 **100% Free** — No subscriptions, no third-party form tools, no hidden costs
 - **Just Share the Link** — Host it anywhere (GitHub Pages, Netlify, Vercel) and share in your groups
 
@@ -78,6 +78,48 @@
 
 ---
 
+## ▶️ Run Locally
+
+This project is a plain static site (HTML/CSS/vanilla JS).
+
+From the project root, run:
+
+```bash
+python -m http.server 5500
+```
+
+Then open:
+
+```text
+http://localhost:5500
+```
+
+---
+
+## 🔧 Google Sheet URL Placeholder
+
+Set your Apps Script web app endpoint in [script.js](script.js):
+
+```javascript
+const GOOGLE_SHEET_URL = "YOUR_GOOGLE_SHEET_URL";
+```
+
+---
+
+## 🛡️ Branding Compliance
+
+All branding edits must follow [BRANDING_RULES.md](BRANDING_RULES.md), including logo usage limits and the required footer disclaimer text.
+
+---
+
+## 🌐 GitHub Pages Deployment
+
+This repository is deployed via GitHub Pages at:
+
+https://technicalmonish.github.io/AWS-Core-Team-Recruitment-Form/
+
+---
+
 ## 🚀 Quick Setup (3 Placeholders)
 
 After cloning, you only need to replace **3 placeholders** to make this your own:
@@ -86,7 +128,7 @@ After cloning, you only need to replace **3 placeholders** to make this your own
 | ------------------------- | ------------ | ------------------------------------------ |
 | `YOUR_LOGO_PATH`          | `index.html` | Path to your logo file (e.g. `banner.png`) |
 | `YOUR_GOOGLE_SHEET_URL`   | `script.js`  | Your Google Apps Script Web App URL        |
-| `YOUR_WHATSAPP_GROUP_URL` | `index.html` | Your WhatsApp group invite link            |
+| `DISCORD_INVITE_URL`      | `script.js`  | Your Discord server invite link            |
 
 ---
 
@@ -104,17 +146,17 @@ After cloning, you only need to replace **3 placeholders** to make this your own
 
 ---
 
-## 💬 2. Add Your WhatsApp Group Link
+## 💬 2. Add Your Discord Server Link
 
-1. Open your WhatsApp group → **Group Info → Invite via link → Copy link**.
-2. Open `index.html` and find the success page section:
-   ```html
-   <a href="YOUR_WHATSAPP_GROUP_URL" target="_blank" ...></a>
-   ```
-3. Replace `YOUR_WHATSAPP_GROUP_URL` with your invite link:
-   ```html
-   <a href="https://chat.whatsapp.com/YOUR_GROUP_ID" target="_blank" ...></a>
-   ```
+1. Create or open your Discord server invite and copy the URL.
+2. Open `script.js` and find:
+  ```javascript
+  const DISCORD_INVITE_URL = "#";
+  ```
+3. Replace `#` with your invite link:
+  ```javascript
+  const DISCORD_INVITE_URL = "https://discord.gg/YOUR_SERVER_CODE";
+  ```
 
 ---
 
@@ -127,9 +169,9 @@ Completely free, no server required.
 - Go to [sheets.google.com](https://sheets.google.com) and create a new spreadsheet.
 - Add these headers in **Row 1**:
 
-| A         | B          | C         | D     | E     | F      | G       | H    | I        | J            | K            | L      | M           | N          | O        |
-| --------- | ---------- | --------- | ----- | ----- | ------ | ------- | ---- | -------- | ------------ | ------------ | ------ | ----------- | ---------- | -------- |
-| Timestamp | First Name | Last Name | Gmail | Phone | Branch | Section | Year | Why Join | Improvements | Expectations | Skills | Other Skill | Proof Link | Workshop |
+| A         | B     | C          | D         | E     | F     | G     | H          | I          | J              | K        | L            | M            | N            | O           | P      | Q           | R        | S               | T                     | U                     | V                          | W                 | X                |
+| --------- | ----- | ---------- | --------- | ----- | ----- | ----- | ---------- | ---------- | -------------- | -------- | ------------ | ------------ | ------------ | ----------- | ------ | ----------- | -------- | --------------- | --------------------- | --------------------- | -------------------------- | ----------------- | ---------------- |
+| Timestamp | Track | First Name | Last Name | Email | Phone | Major | Other Major | Campus     | Classification | Why Join | Improvements | Expectations | Skills       | Other Skill | Proof Link | Workshop | Role Preference | Leadership Experience | Technical Experience | Initiative This Semester | Weekly Commitment | Conduct Agreement |
 
 ### 3b. Add the Apps Script
 
@@ -143,13 +185,15 @@ function doPost(e) {
 
   sheet.appendRow([
     new Date(),
+    data.track,
     data.firstName,
     data.lastName,
-    data.gmail,
+    data.email,
     data.phone,
-    data.branch,
-    data.section,
-    data.year,
+    data.major,
+    data.otherMajor,
+    data.campus,
+    data.classification,
     data.whyJoin,
     data.improvements,
     data.expectations,
@@ -157,10 +201,16 @@ function doPost(e) {
     data.otherSkill,
     data.proofLink,
     data.workshop,
+    data.rolePreference,
+    data.leadershipExperience,
+    data.technicalExperience,
+    data.initiativeThisSemester,
+    data.weeklyCommitment,
+    data.conductAgreement,
   ]);
 
   return ContentService.createTextOutput(
-    JSON.stringify({ status: "success" }),
+    JSON.stringify({ ok: true }),
   ).setMimeType(ContentService.MimeType.JSON);
 }
 ```
@@ -208,7 +258,7 @@ Done — form submissions now land in your spreadsheet. 🎉
 | Form fields & pages                 | `index.html`                        |
 | Colors, fonts, animations           | `styles.css`                        |
 | Validation rules & submission logic | `script.js`                         |
-| WhatsApp group link                 | `index.html` → success page section |
+| Discord server link                 | `script.js`                         |
 | Banner logo                         | `index.html` → banner section       |
 
 ---
