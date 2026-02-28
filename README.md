@@ -116,7 +116,7 @@ All branding edits must follow [BRANDING_RULES.md](BRANDING_RULES.md), including
 
 This repository is deployed via GitHub Pages at:
 
-https://technicalmonish.github.io/AWS-Core-Team-Recruitment-Form/
+https://agentpierre.github.io/AWS-Core-Team-Recruitment-Form/
 
 ---
 
@@ -271,12 +271,14 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🙌 Credits
 
-Created and open-sourced by **[Technical Monish](https://github.com/technicalmonish)** to make recruitment forms accessible to everyone — no more depending on Google Forms or paid form builders. Fork it, customize it, share it in your groups, and start collecting applications for free.
+Originally created and open-sourced by **[Technical Monish](https://github.com/technicalmonish)** to make recruitment forms accessible to everyone.
+
+This fork is customized and maintained by **[AgentPierre](https://github.com/agentpierre)** for AWS Cloud Club core team recruitment.
 
 If this template helped you, consider giving it a ⭐ on GitHub.
 
 ---
 
 <p align="center">
-  Made with ☁️ by <a href="https://github.com/technicalmonish">Technical Monish</a>
+  Original template by <a href="https://github.com/technicalmonish">Technical Monish</a> • Maintained by <a href="https://github.com/agentpierre">AgentPierre</a>
 </p>

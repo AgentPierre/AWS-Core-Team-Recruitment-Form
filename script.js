@@ -471,7 +471,9 @@ function submitForm() {
       let payload = null;
       try {
         payload = JSON.parse(text);
-      } catch (_) { }
+      } catch (err) {
+        console.warn("Failed to parse submission response as JSON:", err, "Raw response text:", text);
+      }
 
       if (payload && payload.ok === true) {
         showSuccessPage();

@@ -150,10 +150,24 @@
         </div>
     </div>
     <script>
-        const DISCORD_INVITE_URL = "#";
+        // Set this to your actual Discord invite URL during deployment.
+        // When left empty, the Discord link will be shown as "coming soon" and disabled.
+        const DISCORD_INVITE_URL = "";
         const thankyouDiscordLink = document.getElementById("thankyouDiscordLink");
         if (thankyouDiscordLink) {
-            thankyouDiscordLink.href = DISCORD_INVITE_URL;
+            if (typeof DISCORD_INVITE_URL === "string" && DISCORD_INVITE_URL.trim() !== "") {
+                thankyouDiscordLink.href = DISCORD_INVITE_URL;
+            } else {
+                // Handle unconfigured Discord invite URL gracefully.
+                thankyouDiscordLink.removeAttribute("href");
+                thankyouDiscordLink.style.pointerEvents = "none";
+                thankyouDiscordLink.style.cursor = "default";
+                // Optionally update the link text to indicate that the invite is not yet available.
+                if (!thankyouDiscordLink.dataset.originalText) {
+                    thankyouDiscordLink.dataset.originalText = thankyouDiscordLink.textContent || "";
+                }
+                thankyouDiscordLink.textContent = "Discord invite link coming soon";
+            }
         }
     </script>
 </body>
