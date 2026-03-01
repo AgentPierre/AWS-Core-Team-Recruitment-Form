@@ -372,7 +372,7 @@ function launchConfetti() {
 // Replace this URL with your Google Apps Script Web App URL
 const GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbzBPbcQ6sIbuJV_MIvzBn8GVSDZS96dqASsB8dKPmaqPffEyvh4B4GnsOB50aVQMw-btw/exec";
-const DISCORD_INVITE_URL = "#";
+const DISCORD_INVITE_URL = "https://discord.gg/8eABTmM8mT";
 const FORM_MIN_FILL_MS = 4000;
 const formStartedAt = Date.now();
 
