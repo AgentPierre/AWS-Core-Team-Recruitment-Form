@@ -508,7 +508,9 @@ function submitForm() {
       let payload = null;
       try {
         payload = JSON.parse(text);
-      } catch (_) { }
+      } catch (err) {
+        console.warn("Failed to parse submission response as JSON:", err, "Raw response text:", text);
+      }
 
       if (payload && payload.ok === true) {
         showSuccessPage();
@@ -540,19 +542,43 @@ function showSuccessPage() {
   launchConfetti();
 }
 
-// Init
-showPage(1);
+function bindNavigationButtons() {
+  const navigationBindings = [
+    { id: "btnNext1", handler: () => nextPage(1) },
+    { id: "btnBack2", handler: () => prevPage(2) },
+    { id: "btnNext2", handler: () => nextPage(2) },
+    { id: "btnBack3", handler: () => prevPage(3) },
+    { id: "btnNext3", handler: () => nextPage(3) },
+    { id: "btnBack4", handler: () => prevPage(4) },
+    { id: "btnSubmit", handler: () => submitForm() },
+  ];
 
-const successDiscordLink = document.getElementById("successDiscordLink");
-if (successDiscordLink) {
-  successDiscordLink.href = DISCORD_INVITE_URL;
+  navigationBindings.forEach(({ id, handler }) => {
+    const button = document.getElementById(id);
+    if (!button || button.dataset.boundClick === "true") return;
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      handler();
+    });
+    button.dataset.boundClick = "true";
+  });
 }
 
-document
-  .querySelectorAll('input[name="track"]')
-  .forEach((radio) => radio.addEventListener("change", handleTrackChange));
-document
-  .getElementById("major")
-  .addEventListener("change", toggleOtherMajorField);
-handleTrackChange();
-toggleOtherMajorField();
+document.addEventListener("DOMContentLoaded", () => {
+  bindNavigationButtons();
+  showPage(1);
+
+  const successDiscordLink = document.getElementById("successDiscordLink");
+  if (successDiscordLink) {
+    successDiscordLink.href = DISCORD_INVITE_URL;
+  }
+
+  document
+    .querySelectorAll('input[name="track"]')
+    .forEach((radio) => radio.addEventListener("change", handleTrackChange));
+  document
+    .getElementById("major")
+    .addEventListener("change", toggleOtherMajorField);
+  handleTrackChange();
+  toggleOtherMajorField();
+});
