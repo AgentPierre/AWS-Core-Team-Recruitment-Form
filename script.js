@@ -373,6 +373,30 @@ function launchConfetti() {
 const GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbzBPbcQ6sIbuJV_MIvzBn8GVSDZS96dqASsB8dKPmaqPffEyvh4B4GnsOB50aVQMw-btw/exec";
 const DISCORD_INVITE_URL = "#";
+const FORM_MIN_FILL_MS = 4000;
+const formStartedAt = Date.now();
+
+function sanitizeText(value, maxLength = 500) {
+  return String(value ?? "").trim().slice(0, maxLength);
+}
+
+function sanitizePhone(value) {
+  return sanitizeText(value, 25).replace(/[^\d\s+\-()]/g, "");
+}
+
+function sanitizeUrl(value) {
+  const candidate = sanitizeText(value, 500);
+  if (!candidate) return "";
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.protocol === "https:" || parsed.protocol === "http:") {
+      return parsed.toString();
+    }
+  } catch (err) {
+    return "";
+  }
+  return "";
+}
 
 function isDevSubmissionMode() {
   const url = (GOOGLE_SHEET_URL || "").trim();
@@ -384,8 +408,19 @@ function isDevSubmissionMode() {
 function submitForm() {
   if (!validatePage(4)) return;
 
+  const honeypot = document.getElementById("website");
+  if (honeypot && honeypot.value.trim()) {
+    alert("Submission blocked. Please refresh and try again.");
+    return;
+  }
+
+  if (Date.now() - formStartedAt < FORM_MIN_FILL_MS) {
+    alert("Please review your answers before submitting.");
+    return;
+  }
+
   const emailInput = document.getElementById("email");
-  const normalizedEmail = emailInput.value.trim().toLowerCase();
+  const normalizedEmail = sanitizeText(emailInput.value, 254).toLowerCase();
   emailInput.value = normalizedEmail;
   const uhEmailRegex = /@(uh\.edu|cougarnet\.uh\.edu)$/i;
   if (!uhEmailRegex.test(normalizedEmail)) {
@@ -396,41 +431,46 @@ function submitForm() {
   }
 
   const track = getSelectedTrack();
+  const clientElapsedMs = Date.now() - formStartedAt;
   const majorValue = document.getElementById("major").value;
   const otherMajorValue =
-    majorValue === "Other" ? document.getElementById("otherMajor").value : "";
+    majorValue === "Other"
+      ? sanitizeText(document.getElementById("otherMajor").value, 120)
+      : "";
   const isOfficer = track === "Officer";
 
   const data = {
+    website: honeypot ? sanitizeText(honeypot.value, 200) : "",
+    clientElapsedMs,
     track,
-    firstName: document.getElementById("firstName").value,
-    lastName: document.getElementById("lastName").value,
-    email: document.getElementById("email").value.trim().toLowerCase(),
-    phone: document.getElementById("phone").value,
+    firstName: sanitizeText(document.getElementById("firstName").value, 80),
+    lastName: sanitizeText(document.getElementById("lastName").value, 80),
+    email: sanitizeText(document.getElementById("email").value, 254).toLowerCase(),
+    phone: sanitizePhone(document.getElementById("phone").value),
     major: majorValue,
     otherMajor: otherMajorValue,
     campus: document.getElementById("campus").value,
     classification: document.getElementById("year").value,
-    whyJoin: document.getElementById("whyJoin").value,
-    improvements: document.getElementById("improvements").value,
-    expectations: document.getElementById("expectations").value,
+    whyJoin: sanitizeText(document.getElementById("whyJoin").value, 2000),
+    improvements: sanitizeText(document.getElementById("improvements").value, 2000),
+    expectations: sanitizeText(document.getElementById("expectations").value, 2000),
     skills: [...document.querySelectorAll('input[name="skills"]:checked')].map(
       (c) => c.value,
     ),
-    otherSkill: document.getElementById("otherSkill").value,
-    proofLink: document.getElementById("proofLink").value,
+    otherSkill: sanitizeText(document.getElementById("otherSkill").value, 120),
+    proofLink: sanitizeUrl(document.getElementById("proofLink").value),
     workshop: document.querySelector('input[name="workshop"]:checked').value,
     rolePreference: isOfficer
-      ? document.getElementById("rolePreference").value
+      ? sanitizeText(document.getElementById("rolePreference").value, 80)
       : "",
     leadershipExperience: isOfficer
-      ? document.getElementById("leadershipExperience").value
+      ? sanitizeText(document.getElementById("leadershipExperience").value, 2000)
       : "",
     technicalExperience: isOfficer
-      ? document.getElementById("technicalExperience").value
+      ? sanitizeText(document.getElementById("technicalExperience").value, 2000)
       : "",
     initiativeThisSemester: isOfficer
-      ? document.getElementById("initiativeLead").value
+      ? sanitizeText(document.getElementById("initiativeLead").value, 2000)
       : "",
     weeklyCommitment: isOfficer
       ? document.getElementById("weeklyCommitment").checked
@@ -451,13 +491,10 @@ function submitForm() {
   };
 
   if (isDevSubmissionMode()) {
-    console.log("[DEV MODE] Form payload:", data);
-    console.log("[DEV MODE] Payload keys:", Object.keys(data));
+    console.log("[DEV MODE] Submission skipped: placeholder endpoint configured.");
     showSuccessPage();
     return;
   }
-
-  console.log("[SUBMIT] Payload keys:", Object.keys(data));
 
   // Send to Google Sheets
   fetch(GOOGLE_SHEET_URL, {

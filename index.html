@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>AWS Cloud Club - University of Houston Recruitment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -213,6 +216,9 @@
           <div class="field">
             <label for="phone">Phone Number <span class="req">*</span></label>
             <input type="tel" id="phone" placeholder="+1 555-123-4567" autocomplete="off" />
+          </div>
+          <div class="field hidden" aria-hidden="true">
+            <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
           </div>
           <div class="field">
             <label for="major">Major <span class="req">*</span></label>
