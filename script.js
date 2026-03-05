@@ -114,6 +114,7 @@ function clearErrors(page) {
   if (!el) return;
   el.querySelectorAll(".error").forEach((e) => e.classList.remove("error"));
   el.querySelectorAll(".error-msg").forEach((e) => e.remove());
+  el.querySelectorAll(".page-error-summary").forEach((e) => e.remove());
 }
 
 function showError(input, msg) {
@@ -122,6 +123,17 @@ function showError(input, msg) {
   div.className = "error-msg";
   div.textContent = msg;
   input.parentNode.insertBefore(div, input.nextSibling);
+}
+
+function showPageErrorSummary(page, msg) {
+  const pageEl = document.getElementById(`page${page}`);
+  if (!pageEl) return;
+  const cardBody = pageEl.querySelector(".card-body");
+  if (!cardBody) return;
+  const summary = document.createElement("div");
+  summary.className = "page-error-summary";
+  summary.textContent = msg;
+  cardBody.insertBefore(summary, cardBody.firstChild);
 }
 
 function validatePage(page) {
@@ -197,6 +209,8 @@ function validatePage(page) {
   }
 
   if (page === 3) {
+    let hasOfficerValidationError = false;
+
     if (
       document.querySelectorAll('input[name="skills"]:checked').length === 0
     ) {
@@ -225,6 +239,7 @@ function validatePage(page) {
         if (!el.value.trim()) {
           showError(el, f.msg);
           valid = false;
+          hasOfficerValidationError = true;
         }
       });
 
@@ -235,6 +250,7 @@ function validatePage(page) {
         m.textContent = "Please confirm weekly time commitment";
         weeklyCommitment.closest(".ack-field").appendChild(m);
         valid = false;
+        hasOfficerValidationError = true;
       }
 
       const conductAgreement = document.getElementById("conductAgreement");
@@ -244,7 +260,15 @@ function validatePage(page) {
         m.textContent = "You must agree to follow the Code of Conduct";
         conductAgreement.closest(".ack-field").appendChild(m);
         valid = false;
+        hasOfficerValidationError = true;
       }
+    }
+
+    if (!valid) {
+      const summaryMessage = hasOfficerValidationError
+        ? "Please complete the required Step 3 fields, including officer requirements, before continuing."
+        : "Please complete the required Step 3 fields before continuing.";
+      showPageErrorSummary(3, summaryMessage);
     }
   }
 

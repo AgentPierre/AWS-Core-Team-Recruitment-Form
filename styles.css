@@ -1003,6 +1003,21 @@ textarea.error:focus {
   font-size: 11px;
 }
 
+.page-error-summary {
+  border: 1px solid var(--red);
+  background: #fef2f2;
+  color: var(--red);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.page-error-summary::before {
+  content: "⚠ ";
+}
+
 /* ===== SUCCESS PAGE ===== */
 .success-card {
   text-align: center;
