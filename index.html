@@ -198,7 +198,7 @@
             </div>
           </div>
           <div class="field">
-            <label>Full Name of Student <span class="req">*</span></label>
+            <label>Full Name <span class="req">*</span></label>
             <div class="name-row">
               <div class="name-col">
                 <input type="text" id="firstName" placeholder="John" autocomplete="given-name" /><span
@@ -259,7 +259,7 @@
             </select>
           </div>
           <div class="field">
-            <label for="year">Classification <span class="req">*</span></label>
+            <label for="year">Academic Classification <span class="req">*</span></label>
             <select id="year">
               <option value="" disabled selected>Please Select</option>
               <option value="Freshman">Freshman</option>
@@ -287,10 +287,10 @@
       <div class="form-card fade-up">
         <div class="card-header">
           <div class="warning-badge">⚠ Important Notice</div>
-          <h2>Usage of AI While Filling this Form Redirects to Rejection!</h2>
+          <h2>Please Answer in Your Own Words</h2>
           <p>
-            Fill out these 3 Sections without using the AI by the words
-            directly from the bottom of your heart :)
+            Please complete these 3 sections without using AI-generated responses.
+            Applications with AI-generated content may be disqualified.
           </p>
         </div>
         <div class="card-divider"></div>
@@ -298,19 +298,19 @@
           <div class="field">
             <label for="whyJoin">Why do you want to join AWS Cloud Club?
               <span class="req">*</span></label>
-            <textarea id="whyJoin" rows="5" placeholder="Tell us why you want to join AWS Cloud Club"></textarea>
+            <textarea id="whyJoin" rows="5" placeholder="Share why you want to join AWS Cloud Club"></textarea>
           </div>
           <div class="field">
             <label for="improvements">What improvements can you bring to the club if you join?
               <span class="req">*</span></label>
             <textarea id="improvements" rows="5"
-              placeholder="Tell me What Improvements can you Bring to Cloud Clubs :)"></textarea>
+              placeholder="Describe the improvements you would bring to the club"></textarea>
           </div>
           <div class="field">
             <label for="expectations">What do you expect from this club?
               <span class="req">*</span></label>
             <textarea id="expectations" rows="5"
-              placeholder="Tell me What do You Expect in Return from AWS Cloud Clubs :)"></textarea>
+              placeholder="Describe what you hope to gain from joining the club"></textarea>
           </div>
         </div>
       </div>
@@ -362,16 +362,16 @@
             </div>
           </div>
           <div class="field">
-            <label for="otherSkill">If Other, What Skill Do You Have?</label>
-            <input type="text" id="otherSkill" placeholder="Which Skill ?" />
+            <label for="otherSkill">If you selected "Others," please specify</label>
+            <input type="text" id="otherSkill" placeholder="Enter your skill" />
           </div>
           <div class="field">
-            <label for="proofLink">Proof of Your Skill :)</label>
-            <input type="text" id="proofLink" placeholder="Links for Proof" />
+            <label for="proofLink">Portfolio or project link (optional)</label>
+            <input type="text" id="proofLink" placeholder="Add a LinkedIn, GitHub, or project link" />
             <p class="bonus-note">
-              BONUS – If You Have Organised any Events or Made any Projects
-              Related to the Above Mentioned Skill, Add that Link Here!
-              (LinkedIn/GitHub/Any Other Links Accepted)
+              Bonus: If you have organized events or built projects related to your
+              selected skills, include links here.
+              (LinkedIn, GitHub, or other links are accepted.)
             </p>
           </div>
           <div class="officer-fields hidden" id="officerFields">
@@ -395,7 +395,7 @@
               </select>
             </div>
             <div class="field">
-              <label for="leadershipExperience">Leadership/organization experience
+              <label for="leadershipExperience">Leadership or organizational experience
                 <span class="req">*</span></label>
               <textarea id="leadershipExperience" rows="4"
                 placeholder="Share relevant leadership or organization experience"></textarea>
@@ -405,7 +405,7 @@
               <textarea id="technicalExperience" rows="4" placeholder="Describe your technical experience"></textarea>
             </div>
             <div class="field">
-              <label for="initiativeLead">Initiative you would lead this semester
+              <label for="initiativeLead">Describe one initiative you would lead this semester
                 <span class="req">*</span></label>
               <textarea id="initiativeLead" rows="4" placeholder="Describe one initiative you would lead"></textarea>
             </div>
@@ -449,7 +449,8 @@
         <div class="card-divider"></div>
         <div class="card-body">
           <div class="field">
-            <label>Are you willing to attend the AWS Learning Workshop twice a month? <span class="req">*</span></label>
+            <label>Can you attend two AWS Cloud Club workshops per month during the semester? <span
+                class="req">*</span></label>
             <div class="radio-group" id="workshopGroup">
               <label class="radio-item"><input type="radio" name="workshop" value="Yes" /><span
                   class="radio-dot"></span>
@@ -462,9 +463,8 @@
             <label class="check-item ack-check">
               <input type="checkbox" id="acknowledge" />
               <span class="check-box"></span>
-              <span>By submitting this form, you acknowledge that the Cloud
-                Captain has all the rights to remove any member from the club
-                if found violating the rules and authority.
+              <span>By submitting this form, you acknowledge that members may be
+                removed for violations of the club Code of Conduct and policies.
                 <span class="req">*</span></span>
             </label>
           </div>
