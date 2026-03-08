@@ -422,6 +422,11 @@ function sanitizeUrl(value) {
   return "";
 }
 
+function normalizeRolePreference(value) {
+  // Normalize spacing around slashes so values match strict backend allow-lists.
+  return sanitizeText(value, 80).replace(/\s*\/\s*/g, "/");
+}
+
 function isDevSubmissionMode() {
   const url = (GOOGLE_SHEET_URL || "").trim();
   if (!url) return true;
@@ -485,7 +490,7 @@ function submitForm() {
     proofLink: sanitizeUrl(document.getElementById("proofLink").value),
     workshop: document.querySelector('input[name="workshop"]:checked').value,
     rolePreference: isOfficer
-      ? sanitizeText(document.getElementById("rolePreference").value, 80)
+      ? normalizeRolePreference(document.getElementById("rolePreference").value)
       : "",
     leadershipExperience: isOfficer
       ? sanitizeText(document.getElementById("leadershipExperience").value, 2000)
