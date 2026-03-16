@@ -1210,7 +1210,7 @@ textarea.error:focus {
   gap: 8px;
   margin-top: 1.2rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+  background: linear-gradient(135deg, #ff5c7a, #f64060);
   color: #fff;
   font-weight: 600;
   border-radius: 10px;
@@ -1220,14 +1220,14 @@ textarea.error:focus {
     background 0.2s,
     transform 0.2s,
     box-shadow 0.2s;
-  box-shadow: 0 4px 16px rgba(91, 62, 165, 0.35);
+  box-shadow: 0 4px 16px rgba(246, 64, 96, 0.35);
 }
 
 .meetup-link:hover,
 .meetup-link:focus-visible {
-  background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+  background: linear-gradient(135deg, #ff6f89, #f64060);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(91, 62, 165, 0.5);
+  box-shadow: 0 8px 30px rgba(246, 64, 96, 0.5);
 }
 
 .meetup-link svg {
