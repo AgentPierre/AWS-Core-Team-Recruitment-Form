@@ -45,7 +45,7 @@
 
 <p align="center"><img src="4.png" alt="Step 4" width="600" /></p>
 
-**Step 5** — Success page with confetti & Discord server link
+**Step 5** — Success page with confetti & Meetup link
 
 <p align="center"><img src="5.png" alt="Step 5" width="600" /></p>
 
@@ -60,7 +60,7 @@
 - 📱 **Fully Responsive** — Works on desktop, tablet, and mobile
 - ✅ **Client-Side Validation** — Required fields, email & phone format checks
 - 📊 **Google Sheets Integration** — Zero-cost, serverless data collection
-- 💬 **Discord Server Link** — Post-submission CTA to keep applicants in the loop
+- 💬 **Meetup Link** — Post-submission CTA to keep applicants in the loop
 - 🆓 **100% Free** — No subscriptions, no third-party form tools, no hidden costs
 - **Just Share the Link** — Host it anywhere (GitHub Pages, Netlify, Vercel) and share in your groups
 
@@ -128,7 +128,7 @@ After cloning, you only need to replace **3 placeholders** to make this your own
 | ------------------------- | ------------ | ------------------------------------------ |
 | `YOUR_LOGO_PATH`          | `index.html` | Path to your logo file (e.g. `banner.png`) |
 | `YOUR_GOOGLE_SHEET_URL`   | `script.js`  | Your Google Apps Script Web App URL        |
-| `DISCORD_INVITE_URL`      | `script.js`  | Your Discord server invite link            |
+| `MEETUP_URL`              | `script.js`  | Your Meetup group URL                      |
 
 ---
 
@@ -146,16 +146,16 @@ After cloning, you only need to replace **3 placeholders** to make this your own
 
 ---
 
-## 💬 2. Add Your Discord Server Link
+## 💬 2. Add Your Meetup Link
 
-1. Create or open your Discord server invite and copy the URL.
+1. Copy your Meetup group URL.
 2. Open `script.js` and find:
   ```javascript
-  const DISCORD_INVITE_URL = "#";
+  const MEETUP_URL = "#";
   ```
-3. Replace `#` with your invite link:
+3. Replace `#` with your Meetup link:
   ```javascript
-  const DISCORD_INVITE_URL = "https://discord.gg/YOUR_SERVER_CODE";
+  const MEETUP_URL = "https://www.meetup.com/your-group-name/";
   ```
 
 ---
@@ -258,7 +258,7 @@ Done — form submissions now land in your spreadsheet. 🎉
 | Form fields & pages                 | `index.html`                        |
 | Colors, fonts, animations           | `styles.css`                        |
 | Validation rules & submission logic | `script.js`                         |
-| Discord server link                 | `script.js`                         |
+| Meetup link                         | `script.js`                         |
 | Banner logo                         | `index.html` → banner section       |
 
 ---
