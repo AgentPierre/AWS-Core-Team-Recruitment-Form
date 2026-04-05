@@ -755,4 +755,9 @@ document.addEventListener("DOMContentLoaded", () => {
     container.addEventListener("input", scheduleSave);
     container.addEventListener("change", scheduleSave);
   }
+
+  const clearDraftBtn = document.getElementById("clearDraftBtn");
+  if (clearDraftBtn) {
+    clearDraftBtn.addEventListener("click", clearDraftAndReset);
+  }
 });
