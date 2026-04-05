@@ -392,6 +392,143 @@ function launchConfetti() {
   }, 400);
 }
 
+/* ===== AUTO-SAVE ===== */
+const DRAFT_KEY = "awscc_form_draft";
+let saveTimer;
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveFormDraft, 800);
+}
+
+function saveFormDraft() {
+  try {
+    const draft = {
+      page: currentPage,
+      track: getSelectedTrack(),
+      firstName: document.getElementById("firstName").value,
+      lastName: document.getElementById("lastName").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      major: document.getElementById("major").value,
+      otherMajor: document.getElementById("otherMajor").value,
+      campus: document.getElementById("campus").value,
+      year: document.getElementById("year").value,
+      whyJoin: document.getElementById("whyJoin").value,
+      improvements: document.getElementById("improvements").value,
+      expectations: document.getElementById("expectations").value,
+      skills: [...document.querySelectorAll('input[name="skills"]:checked')].map((c) => c.value),
+      otherSkill: document.getElementById("otherSkill").value,
+      proofLink: document.getElementById("proofLink").value,
+      rolePreference: document.getElementById("rolePreference").value,
+      leadershipExperience: document.getElementById("leadershipExperience").value,
+      technicalExperience: document.getElementById("technicalExperience").value,
+      initiativeLead: document.getElementById("initiativeLead").value,
+      weeklyCommitment: document.getElementById("weeklyCommitment").checked,
+      conductAgreement: document.getElementById("conductAgreement").checked,
+      workshop: document.querySelector('input[name="workshop"]:checked')?.value ?? "",
+      acknowledge: document.getElementById("acknowledge").checked,
+    };
+    draft.savedAt = Date.now();
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    showSaveToast();
+  } catch (e) {
+    // localStorage unavailable — silently skip
+  }
+}
+
+function restoreFormDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const draft = JSON.parse(raw);
+
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+    if (draft.savedAt && Date.now() - draft.savedAt > SEVEN_DAYS_MS) {
+      clearFormDraft();
+      return;
+    }
+
+    [
+      "firstName", "lastName", "email", "phone", "otherMajor",
+      "otherSkill", "proofLink", "leadershipExperience",
+      "technicalExperience", "initiativeLead",
+      "whyJoin", "improvements", "expectations",
+    ].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && draft[id] != null) el.value = draft[id];
+    });
+
+    ["major", "campus", "year", "rolePreference"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && draft[id]) el.value = draft[id];
+    });
+
+    if (draft.track) {
+      const trackInput = document.querySelector(`input[name="track"][value="${draft.track}"]`);
+      if (trackInput) trackInput.checked = true;
+    }
+    toggleOfficerFields();
+    toggleOtherMajorField();
+
+    if (Array.isArray(draft.skills)) {
+      document.querySelectorAll('input[name="skills"]').forEach((cb) => {
+        cb.checked = draft.skills.includes(cb.value);
+      });
+    }
+
+    if (draft.workshop) {
+      const workshopInput = document.querySelector(`input[name="workshop"][value="${draft.workshop}"]`);
+      if (workshopInput) workshopInput.checked = true;
+    }
+
+    ["weeklyCommitment", "conductAgreement", "acknowledge"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && draft[id] != null) el.checked = draft[id];
+    });
+
+    if (draft.page && draft.page >= 1 && draft.page <= totalPages) {
+      currentPage = draft.page;
+    }
+
+    const btn = document.getElementById("clearDraftBtn");
+    if (btn) btn.classList.remove("hidden");
+  } catch (e) {
+    // Corrupted storage — silently skip
+  }
+}
+
+function clearFormDraft() {
+  try {
+    localStorage.removeItem(DRAFT_KEY);
+  } catch (e) {}
+  const btn = document.getElementById("clearDraftBtn");
+  if (btn) btn.classList.add("hidden");
+}
+
+function clearDraftAndReset() {
+  clearFormDraft();
+  currentPage = 1;
+  showPage(1);
+  document.querySelectorAll("input[type=text], input[type=email], input[type=tel], select, textarea").forEach((el) => {
+    if (el.id === "website") return;
+    el.value = el.tagName === "SELECT" ? "" : "";
+  });
+  document.querySelectorAll("input[type=checkbox], input[type=radio]").forEach((el) => {
+    el.checked = false;
+  });
+  toggleOfficerFields();
+  toggleOtherMajorField();
+}
+
+function showSaveToast() {
+  const toast = document.getElementById("saveToast");
+  if (!toast) return;
+  toast.classList.add("visible");
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => toast.classList.remove("visible"), 2000);
+}
+
 /* ===== SUBMIT ===== */
 // Replace this URL with your Google Apps Script Web App URL
 const GOOGLE_SHEET_URL =
@@ -538,7 +675,7 @@ function submitForm() {
       try {
         payload = JSON.parse(text);
       } catch (err) {
-        console.warn("Failed to parse submission response as JSON:", err, "Raw response text:", text);
+        console.warn("Failed to parse submission response as JSON:", err);
       }
 
       if (payload && payload.ok === true) {
@@ -568,6 +705,7 @@ function showSuccessPage() {
     d.classList.add("done");
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
+  clearFormDraft();
   launchConfetti();
 }
 
@@ -595,7 +733,8 @@ function bindNavigationButtons() {
 
 document.addEventListener("DOMContentLoaded", () => {
   bindNavigationButtons();
-  showPage(1);
+  restoreFormDraft();
+  showPage(currentPage);
 
   const successMeetupLink = document.getElementById("successMeetupLink");
   if (successMeetupLink) {
@@ -610,4 +749,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("change", toggleOtherMajorField);
   handleTrackChange();
   toggleOtherMajorField();
+
+  const container = document.querySelector(".container");
+  if (container) {
+    container.addEventListener("input", scheduleSave);
+    container.addEventListener("change", scheduleSave);
+  }
 });
