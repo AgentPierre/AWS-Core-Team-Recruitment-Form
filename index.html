@@ -172,6 +172,9 @@
         <span class="step-dot" data-step="3">3</span>
         <span class="step-dot" data-step="4">4</span>
       </div>
+      <button type="button" class="clear-draft-btn hidden" id="clearDraftBtn" onclick="clearDraftAndReset()">
+        × Clear saved data
+      </button>
     </div>
 
     <!-- PAGE 1: Personal Details -->
@@ -518,6 +521,7 @@
     </footer>
   </div>
   <!-- end .container -->
+  <div class="save-toast" id="saveToast">Progress saved</div>
   <script src="script.js"></script>
 </body>
 
